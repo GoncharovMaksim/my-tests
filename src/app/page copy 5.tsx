@@ -1,32 +1,53 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import checkUserAnswer from './checkUserAnswer';
 import styles from './page.module.css';
-import getQuestions from './getQuestions';
 
 interface UserAnswer {
 	questionId: number;
 	selected: string[];
-}
+};
 interface CheckUserAnswer {
 	questionId: number;
 	isCorrect: boolean;
 }
 
+
+const questions = [
+	{
+		id: 1,
+		topic: 'Животные',
+		questionText: "How do you say 'кошка' in English?",
+		type: 'single',
+		options: [
+			{ id: 'a', text: 'Dog' },
+			{ id: 'b', text: 'Cat' },
+			{ id: 'c', text: 'Bird' },
+		],
+		explanation: "Правильный ответ — 'Cat'.",
+		audio: 'https://example.com/audio/cat.mp3',
+		image: '/img/cat.jpg',
+	},
+	{
+		id: 2,
+		topic: 'Животные',
+		questionText: "How do you say 'кошка' in English?",
+		type: 'multiple',
+		options: [
+			{ id: 'a', text: 'Dog' },
+			{ id: 'b', text: 'Cat' },
+			{ id: 'c', text: 'Bird' },
+		],
+		explanation: "Правильный ответ — 'Cat'.",
+		audio: 'https://example.com/audio/cat.mp3',
+		image: '/img/cat.jpg',
+	},
+];
+
 export default function Home() {
 	const [userAnswer, setUserAnswer] = useState<UserAnswer[]>([]);
 	const [testIsComplited, setTestIsComplited] = useState(false);
 	const [resultTestIsComplited, setResultTestIsComplited] = useState(false);
-	const [questions, setQuestions] = useState([]);
-	const [isLoading, setisLoading] = useState(true);
-	const [questionsFilter, setQuestionsFilter] = useState([]);
-
-	useEffect(() => {
-		getQuestions(questionsFilter).then(response => {
-			setQuestions(response);
-			setisLoading(false);
-		});
-	}, [questionsFilter]);
 
 	const handleAnswerChange = (
 		questionId: number,
@@ -60,21 +81,20 @@ export default function Home() {
 	};
 
 	const handleUserAnswerCheck = async () => {
-		const { result } = await checkUserAnswer(userAnswer);
-
-		const allCorrect =
-			result.length === questions.length &&
-			result.every((answer: CheckUserAnswer) => answer.isCorrect);
-
-		setResultTestIsComplited(allCorrect);
+		const responseCheckUserAnswer = await checkUserAnswer(userAnswer);
+		const resultCheckUserAnswer = responseCheckUserAnswer.result.find(
+			(answer: CheckUserAnswer) => !answer.isCorrect
+		);
+		setResultTestIsComplited(!resultCheckUserAnswer);
 		setTestIsComplited(true);
+		
 	};
 
-	const handleClearResultTest = () => {
-		setTestIsComplited(false);
-		setUserAnswer([]);
-		setResultTestIsComplited(false);
-	};
+const handleClearResultTest = () => {
+	setTestIsComplited(false);
+	setUserAnswer([]);
+	setResultTestIsComplited(false);
+};
 
 	if (testIsComplited) {
 		return (
@@ -86,24 +106,14 @@ export default function Home() {
 			</div>
 		);
 	}
-	if (isLoading) {
-		return <div className={styles.page}>Загрузка...</div>;
-	}
-	if (questions.length === 0) {
-		return <div className={styles.page}>Нет доступных вопросов.</div>;
-	}
 
 	return (
 		<div className={styles.page}>
-			<h1>Тест по теме:</h1>
-			<select name='' id=''>
-				<option value='apple'>Яблоко</option>
-				<option value='apple'>dfgdg</option>
-			</select>
+			<h1>Тестирование по литературе</h1>
 			<main className={styles.main}>
 				{questions.map(question => (
 					<div key={question.id}>
-						<h3>Вопрос №{question.id}</h3>
+						<h3>{question.topic}</h3>
 						<p>{question.questionText}</p>
 						<ul className={styles.optionsList}>
 							{question.options.map(option => (

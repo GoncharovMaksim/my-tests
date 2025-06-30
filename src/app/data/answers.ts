@@ -5,7 +5,11 @@ export const correctAnswers = [
 	},
 	{
 		id: 2,
-		correctOptions: ['b'], // если multiple, то можно например ['b', 'c']
+		correctOptions: ['b', 'c'], // если multiple, то можно например ['b', 'c']
+	},
+	{
+		id: 3,
+		correctOptions: ['b', 'c'], // если multiple, то можно например ['b', 'c']
 	},
 	// другие вопросы...
 ];

@@ -1,6 +1,6 @@
 const checkUserAnswer = async (userAnswer) => {
 	try {
-		const response = await fetch('http://localhost:3000/api/check-answers', {
+		const response = await fetch('/api/check-answers', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -17,6 +17,7 @@ const checkUserAnswer = async (userAnswer) => {
 
 		const data = await response.json();
 		console.log('Результат проверки:', data);
+		return data
 	} catch (error) {
 		console.error('Ошибка при проверке ответов:', error);
 	}

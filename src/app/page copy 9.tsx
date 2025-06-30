@@ -20,7 +20,6 @@ export default function Home() {
 	const [questions, setQuestions] = useState([]);
 	const [isLoading, setisLoading] = useState(true);
 	const [questionsFilter, setQuestionsFilter] = useState([]);
-
 	useEffect(() => {
 		getQuestions(questionsFilter).then(response => {
 			setQuestions(response);
@@ -95,11 +94,7 @@ export default function Home() {
 
 	return (
 		<div className={styles.page}>
-			<h1>Тест по теме:</h1>
-			<select name='' id=''>
-				<option value='apple'>Яблоко</option>
-				<option value='apple'>dfgdg</option>
-			</select>
+			<h1>Тест по теме: {questions[0]?.topic}</h1>
 			<main className={styles.main}>
 				{questions.map(question => (
 					<div key={question.id}>

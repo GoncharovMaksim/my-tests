@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import checkUserAnswer from './checkUserAnswer';
 import styles from './page.module.css';
 import getQuestions from './getQuestions';
@@ -12,21 +12,14 @@ interface CheckUserAnswer {
 	questionId: number;
 	isCorrect: boolean;
 }
+const questions = [];
+getQuestions().then(response => questions.push(response));
 
 export default function Home() {
 	const [userAnswer, setUserAnswer] = useState<UserAnswer[]>([]);
 	const [testIsComplited, setTestIsComplited] = useState(false);
 	const [resultTestIsComplited, setResultTestIsComplited] = useState(false);
-	const [questions, setQuestions] = useState([]);
-	const [isLoading, setisLoading] = useState(true);
-	const [questionsFilter, setQuestionsFilter] = useState([]);
-
-	useEffect(() => {
-		getQuestions(questionsFilter).then(response => {
-			setQuestions(response);
-			setisLoading(false);
-		});
-	}, [questionsFilter]);
+	
 
 	const handleAnswerChange = (
 		questionId: number,
@@ -86,20 +79,13 @@ export default function Home() {
 			</div>
 		);
 	}
-	if (isLoading) {
-		return <div className={styles.page}>Загрузка...</div>;
-	}
-	if (questions.length === 0) {
-		return <div className={styles.page}>Нет доступных вопросов.</div>;
-	}
-
+console.log(questions)
+// if(questions.length===0) {
+// return <div>Загрузка...</div>
+// }
 	return (
 		<div className={styles.page}>
-			<h1>Тест по теме:</h1>
-			<select name='' id=''>
-				<option value='apple'>Яблоко</option>
-				<option value='apple'>dfgdg</option>
-			</select>
+			<h1>Тест по теме: {questions[0]?.topic}</h1>
 			<main className={styles.main}>
 				{questions.map(question => (
 					<div key={question.id}>
@@ -132,6 +118,15 @@ export default function Home() {
 				<button className={styles.button} onClick={handleUserAnswerCheck}>
 					Проверить
 				</button>
+
+				{/* {testIsComplited && (
+					<div className={styles.page}>
+						<div>Тест {resultTestIsComplited ? 'пройден' : 'не пройден'}</div>
+						<button onClick={handleClearResultTest} className={styles.button}>
+							Назад
+						</button>
+					</div>
+				)} */}
 			</main>
 		</div>
 	);
