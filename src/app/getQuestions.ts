@@ -1,4 +1,4 @@
-const getQuestions = async questionsFilter => {
+const getQuestions = async (questionsFilter:string) => {
 	try {
 		const params = new URLSearchParams(questionsFilter).toString();
 		const response = await fetch(`/api/questions?${params}`, {
