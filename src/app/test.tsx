@@ -33,7 +33,7 @@ export default function Test({
 	setStartTest,
 }: {
 	userCheckOptions: string;
-	// setStartTest: boolean;
+	setStartTest: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [userAnswer, setUserAnswer] = useState<UserAnswer[]>([]);
 	const [testIsComplited, setTestIsComplited] = useState(false);
