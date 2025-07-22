@@ -1,4 +1,10 @@
-const checkUserAnswer = async (userAnswer) => {
+interface UserAnswer {
+	questionId: number;
+	selected: string[];
+}
+
+
+const checkUserAnswer = async (userAnswer: UserAnswer[]) => {
 	try {
 		const response = await fetch('/api/check-answers', {
 			method: 'POST',
@@ -17,7 +23,7 @@ const checkUserAnswer = async (userAnswer) => {
 
 		const data = await response.json();
 		console.log('Результат проверки:', data);
-		return data
+		return data;
 	} catch (error) {
 		console.error('Ошибка при проверке ответов:', error);
 	}
