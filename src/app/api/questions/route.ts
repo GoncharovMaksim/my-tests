@@ -28,7 +28,7 @@ const questions: Question[] = [
 	},
 	{
 		id: 2,
-		part: 1,
+		part: 2,
 		topic: 'Животные',
 		questionText: "How do you say 'кошка' in English?",
 		type: 'multiple',
@@ -42,7 +42,7 @@ const questions: Question[] = [
 	{
 		id: 3,
 		part: 1,
-		topic: 'Животные',
+		topic: 'Книги',
 		questionText: "How do you say 'кошка' in English?",
 		type: 'multiple',
 		options: [
@@ -54,6 +54,26 @@ const questions: Question[] = [
 	},
 ];
 
-export async function GET() {
-	return Response.json(questions);
+export async function GET(request: Request) {
+	const { searchParams } = new URL(request.url);
+	const optionsListParam = searchParams.get('optionsList');
+	const topicFilter = searchParams.get('topic');
+	const partFilter = searchParams.get('part');
+
+	if (optionsListParam !== null) {
+		const optionsList = [...new Set(questions.map(q => q.topic))];
+		return Response.json(optionsList);
+	}
+
+	let result = questions;
+
+	if (topicFilter !== null) {
+		result = result.filter(q => q.topic === topicFilter);
+	}
+
+	if (partFilter !== null) {
+		result = result.filter(q => q.part === Number(partFilter));
+	}
+
+	return Response.json(result);
 }

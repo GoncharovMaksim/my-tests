@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import checkUserAnswer from './checkUserAnswer';
 import styles from './page.module.css';
+import getQuestions from './getQuestions';
 
 interface UserAnswer {
 	questionId: number;
@@ -12,42 +13,41 @@ interface CheckUserAnswer {
 	isCorrect: boolean;
 }
 
-const questions = [
-	{
-		id: 1,
-		topic: 'Животные',
-		part:1,
-		questionText: "How do you say 'кошка' in English?",
-		type: 'single',
-		options: [
-			{ id: 'a', text: 'Dog' },
-			{ id: 'b', text: 'Cat' },
-			{ id: 'c', text: 'Bird' },
-		],
-		explanation: "Правильный ответ — 'Cat'.",
-		audio: 'https://example.com/audio/cat.mp3',
-		image: '/img/cat.jpg',
-	},
-	{
-		id: 2,
-		topic: 'Животные',
-		questionText: "How do you say 'кошка' in English?",
-		type: 'multiple',
-		options: [
-			{ id: 'a', text: 'Dog' },
-			{ id: 'b', text: 'Cat' },
-			{ id: 'c', text: 'Bird' },
-		],
-		explanation: "Правильный ответ — 'Cat'.",
-		audio: 'https://example.com/audio/cat.mp3',
-		image: '/img/cat.jpg',
-	},
-];
 
-export default function Home() {
+interface Question {
+	id: number;
+	topic: string;
+	part: number;
+	questionText: string;
+	type: 'single' | 'multiple';
+	options: {
+		id: 'a' | 'b' | 'c';
+		text: string;
+	}[];
+
+	correctOptions: string[];
+}
+
+export default function Test({
+	userCheckOptions,
+	setStartTest,
+}: {
+	userCheckOptions: string;
+	// setStartTest: boolean;
+}) {
 	const [userAnswer, setUserAnswer] = useState<UserAnswer[]>([]);
 	const [testIsComplited, setTestIsComplited] = useState(false);
 	const [resultTestIsComplited, setResultTestIsComplited] = useState(false);
+	const [questions, setQuestions] = useState<Question[]>([]);
+	const [isLoading, setisLoading] = useState(true);
+
+	useEffect(() => {
+		console.log('userCheckOptions', userCheckOptions);
+		getQuestions(userCheckOptions).then(response => {
+			setQuestions(response);
+			setisLoading(false);
+		});
+	}, [userCheckOptions]);
 
 	const handleAnswerChange = (
 		questionId: number,
@@ -95,6 +95,7 @@ export default function Home() {
 		setTestIsComplited(false);
 		setUserAnswer([]);
 		setResultTestIsComplited(false);
+		setStartTest(false);
 	};
 
 	if (testIsComplited) {
@@ -107,10 +108,17 @@ export default function Home() {
 			</div>
 		);
 	}
+	if (isLoading) {
+		return <div className={styles.page}>Загрузка...</div>;
+	}
+	if (questions.length === 0) {
+		return <div className={styles.page}>Нет доступных вопросов.</div>;
+	}
 
 	return (
 		<div className={styles.page}>
 			<h1>Тест по теме: {questions[0].topic}</h1>
+
 			<main className={styles.main}>
 				{questions.map(question => (
 					<div key={question.id}>
@@ -143,16 +151,9 @@ export default function Home() {
 				<button className={styles.button} onClick={handleUserAnswerCheck}>
 					Проверить
 				</button>
-
-				{/* {testIsComplited && (
-					<div className={styles.page}>
-						<div>Тест {resultTestIsComplited ? 'пройден' : 'не пройден'}</div>
-						<button onClick={handleClearResultTest} className={styles.button}>
-							Назад
-						</button>
-					</div>
-				)} */}
 			</main>
 		</div>
 	);
 }
+
+
