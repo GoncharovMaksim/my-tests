@@ -100,4 +100,3 @@ export const correctAnswers = [
 		correctOptions: ['a', 'c'],
 	},
 ];
-//
