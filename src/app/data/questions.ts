@@ -36,7 +36,7 @@ export const questions: Question[] = [
 			{ id: 'b', text: 'Пончик' },
 			{ id: 'c', text: 'Гунька' },
 		],
-		correctOptions: ['a'],
+		correctOptions: ['c'],
 	},
 	{
 		id: 3,

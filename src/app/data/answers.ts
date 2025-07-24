@@ -7,7 +7,7 @@ export const correctAnswers = [
 	{
 		id: 2,
 
-		correctOptions: ['a'],
+		correctOptions: ['c'],
 	},
 	{
 		id: 3,
@@ -51,52 +51,52 @@ export const correctAnswers = [
 	},
 	{
 		id: 11,
-		
+
 		correctOptions: ['b'],
 	},
 	{
 		id: 12,
-		
+
 		correctOptions: ['b'],
 	},
 	{
 		id: 13,
-		
+
 		correctOptions: ['a'],
 	},
 	{
 		id: 14,
-		
+
 		correctOptions: ['c'],
 	},
 	{
 		id: 15,
-		
+
 		correctOptions: ['b'],
 	},
 	{
 		id: 16,
-		
+
 		correctOptions: ['a'],
 	},
 	{
 		id: 17,
-		
+
 		correctOptions: ['b'],
 	},
 	{
 		id: 18,
-		
+
 		correctOptions: ['b'],
 	},
 	{
 		id: 19,
-		
+
 		correctOptions: ['b'],
 	},
 	{
 		id: 20,
-		
+
 		correctOptions: ['a', 'c'],
 	},
 ];
