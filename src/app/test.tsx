@@ -39,7 +39,7 @@ export default function Test({
 	const [resultTestIsComplited, setResultTestIsComplited] = useState(false);
 	const [questions, setQuestions] = useState<Question[]>([]);
 	const [isLoading, setisLoading] = useState(true);
-
+	const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
 	useEffect(() => {
 		//console.log('userCheckOptions', userCheckOptions);
 		getQuestions(userCheckOptions).then(response => {
@@ -52,7 +52,7 @@ export default function Test({
 				];
 			}
 
-			setQuestions(randomQuestions.slice(0,10));
+			setQuestions(randomQuestions.slice(0, 10));
 			setisLoading(false);
 		});
 	}, [userCheckOptions]);
@@ -94,6 +94,9 @@ export default function Test({
 		const allCorrect =
 			result.length === questions.length &&
 			result.every((answer: CheckUserAnswer) => answer.isCorrect);
+		setCorrectAnswerCount(
+			result.filter((answer: CheckUserAnswer) => answer.isCorrect).length
+		);
 
 		setResultTestIsComplited(allCorrect);
 		setTestIsComplited(true);
@@ -109,7 +112,8 @@ export default function Test({
 	if (testIsComplited) {
 		return (
 			<div className={styles.page}>
-				<div>Тест {resultTestIsComplited ? 'пройден' : 'не пройден'}</div>
+				<h1>Тест {resultTestIsComplited ? 'пройден' : 'не пройден'}</h1>
+				<h3>Результат: правильных ответов {correctAnswerCount} из {questions.length}.</h3>
 				<button onClick={handleClearResultTest} className={styles.button}>
 					Назад
 				</button>
