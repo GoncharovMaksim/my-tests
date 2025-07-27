@@ -13,7 +13,6 @@ interface CheckUserAnswer {
 	isCorrect: boolean;
 }
 
-
 interface Question {
 	id: number;
 	topic: string;
@@ -42,9 +41,18 @@ export default function Test({
 	const [isLoading, setisLoading] = useState(true);
 
 	useEffect(() => {
-		console.log('userCheckOptions', userCheckOptions);
+		//console.log('userCheckOptions', userCheckOptions);
 		getQuestions(userCheckOptions).then(response => {
-			setQuestions(response);
+			const randomQuestions = [...response];
+			for (let i = randomQuestions.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[randomQuestions[i], randomQuestions[j]] = [
+					randomQuestions[j],
+					randomQuestions[i],
+				];
+			}
+
+			setQuestions(randomQuestions.slice(0,10));
 			setisLoading(false);
 		});
 	}, [userCheckOptions]);
@@ -155,5 +163,3 @@ export default function Test({
 		</div>
 	);
 }
-
-
