@@ -89,13 +89,13 @@ export default function Test({
 	};
 
 	const handleUserAnswerCheck = async () => {
-		const { result }: { result: CheckUserAnswer[] } = await checkUserAnswer(userAnswer);
+		const { result } = await checkUserAnswer(userAnswer);
 
 		const allCorrect =
 			result.length === questions.length &&
 			result.every((answer: CheckUserAnswer) => answer.isCorrect);
 		setCorrectAnswerCount(
-			result.filter((answer) => answer.isCorrect).length
+			result.filter((answer: CheckUserAnswer) => answer.isCorrect).length
 		);
 
 		setResultTestIsCompleted(allCorrect);
