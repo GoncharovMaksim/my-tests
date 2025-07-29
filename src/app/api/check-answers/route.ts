@@ -1,5 +1,6 @@
+import { questions } from '@/app/data/questions';
 import { NextResponse } from 'next/server';
-import { correctAnswers } from '@/app/data/answers';
+
 
 interface UserAnswer {
 	questionId: number;
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
 		const userAnswers: UserAnswer[] = await req.json();
 
 		const result = userAnswers.map(answer => {
-			const correct = correctAnswers.find(q => q.id === answer.questionId);
+			const correct = questions.find(q => q.id === answer.questionId);
 			if (!correct) {
 				return { questionId: answer.questionId, isCorrect: false };
 			}

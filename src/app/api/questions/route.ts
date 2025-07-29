@@ -1,4 +1,4 @@
-import { questions } from "@/app/data/questions";
+import { questions } from '@/app/data/questions';
 
 export async function GET(request: Request) {
 	const { searchParams } = new URL(request.url);
@@ -11,7 +11,8 @@ export async function GET(request: Request) {
 		return Response.json(optionsList);
 	}
 
-	let result = questions;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	let result = questions.map(({ correctOptions, ...question }) => question);
 
 	if (topicFilter !== null) {
 		result = result.filter(q => q.topic === topicFilter);
