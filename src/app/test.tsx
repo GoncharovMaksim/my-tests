@@ -133,9 +133,9 @@ export default function Test({
 			<h1>Тест по теме: {questions[0].topic}</h1>
 
 			<main className={styles.main}>
-				{questions.map(question => (
+				{questions.map((question, index) => (
 					<div key={question.id}>
-						<h3>Вопрос №{question.id}</h3>
+						<h3>Вопрос №{index + 1}</h3>
 						<p>{question.questionText}</p>
 						<ul className={styles.optionsList}>
 							{question.options.map(option => (
